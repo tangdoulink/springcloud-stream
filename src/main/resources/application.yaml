@@ -1,0 +1,32 @@
+server:
+  port: 7001
+spring:
+  application:
+    name: springcloud-stream
+  cloud:
+    stream: # springcloud-stream 配置项，对应BindingServiceProperties类
+      rocketmq:
+        binder:
+          name-server: 150.158.139.25:9876
+      bindings:
+        sms-out-0:      #从3.1之后开始通过函数式编程的方式来指定消费者；详见：https://docs.spring.io/spring-cloud-stream/docs/3.1.0/reference/html/spring-cloud-stream.html#_binding_and_binding_names
+          # 指定topic
+          destination: topic_1
+          content-type: text/plain
+        sms-in-0:
+          destination: topic_1
+#          content-type: text/plain
+          content-type: application/json
+          group: sms_group
+
+
+# 暴露健康端点检查
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+  endpoint:
+    health:
+      show-details: always
